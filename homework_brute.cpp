@@ -38,17 +38,38 @@ int main(){
   mpz_set_ui(k,0);
 
   brutefactor(n, k);
-  printf("Something \n");
+  printf("First Prime Factor = ");
   mpz_out_str(stdout, 10, k);
   printf("\n");
-  //mpz_out_str(stdout, 10, n);
-  printf("\n");
+  //mpz_out_str(stdout, 10, n);;
+
+
   /* 6. Clean up the mpz_t handles or else we will leak memory */
   mpz_clear(n);
   mpz_clear(k);
 }
 void brutefactor(mpz_t n, mpz_t k){
-  printf("Something ");;
-  printf("\n");
-  mpz_mul(k, n, n); 
+  mpz_t n_sqrt;
+  mpz_init(n_sqrt);
+  mpz_set_ui(n_sqrt, 0);
+  mpz_sqrt(n_sqrt, n);
+  
+  mpz_t index;
+  mpz_init(index);
+  mpz_set_ui(index, 2);
+  
+  mpz_t modval;
+  mpz_init(modval);
+  mpz_set_ui(modval, 100);
+
+  bool looping = true;
+  while(mpz_cmp(index, n_sqrt) < 0 && looping){
+    
+    mpz_mod(modval, n, index);
+    if(mpz_cmp_si(modval, 0) == 0) {
+      mpz_set(k, index);
+      looping = false;
+    }
+    mpz_add_ui(index, index, 1);
+  }
 }
